@@ -153,7 +153,7 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     id: 'g16',
-    imageKey: 'artBrushStroke1',
+    imageKey: 'artBrushstroke1',
     title: 'Blue Gesture',
     category: 'Creative',
     year: 2024,
