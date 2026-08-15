@@ -27,9 +27,9 @@ export default function Travel() {
   const hScrollRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: hScrollProgress } = useScroll({
     target: hScrollRef,
-    offset: ['start end', 'end start'],
+    offset: ['start start', 'end end'],
   });
-  const hScrollX = useTransform(hScrollProgress, [0, 1], ['5%', '-55%']);
+  const hScrollX = useTransform(hScrollProgress, [0, 1], ['0%', '-62%']);
 
   const openDestinationGallery = (dest: TravelDestination) => {
     const galleryItems: LightboxImage[] = [
@@ -262,48 +262,67 @@ export default function Travel() {
       </section>
 
       {/* HORIZONTAL SCROLL */}
-      <section ref={hScrollRef} className="relative py-30 overflow-hidden bg-ink-50">
-        <motion.div {...sectionReveal} className="px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto mb-12">
-          <span className="label-eyebrow block mb-6">Photography</span>
-          <h2 className="font-serif text-display-md text-ink-950 leading-[1.05] tracking-tight">
+      <section ref={hScrollRef} className="relative bg-ink-50">
+        {/* Heading */}
+        <div className="px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto pt-30 pb-12">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="label-eyebrow block mb-6"
+          >
+            Photography
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="font-serif text-display-md text-ink-950 leading-[1.05] tracking-tight"
+          >
             Moments in Motion
-          </h2>
+          </motion.h2>
           <p className="mt-6 font-sans text-body text-ink-500 max-w-md">
             A collection of frames captured while moving through the world.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Desktop: horizontal scroll driven by vertical scroll */}
-        <div className="hidden md:block">
-          <motion.div
-            style={{ x: hScrollX }}
-            className="flex gap-6 will-change-transform"
-          >
-            {horizontalScrollImageKeys.map((key, i) => (
-              <div
-                key={key}
-                className="group relative flex-shrink-0 w-[60vw] max-w-[800px] overflow-hidden border border-ink-200 cursor-pointer"
-                onClick={() => openHorizontalImage(key, i)}
-                data-cursor="view"
-              >
-                <img
-                  src={images[key].src}
-                  alt={images[key].alt}
-                  loading="lazy"
-                  className="w-full aspect-[16/10] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-ink-950/50 to-transparent">
-                  <span className="font-sans text-micro uppercase tracking-ultra-wide text-ink-0/70">
-                    {String(i + 1).padStart(2, '0')} / {String(horizontalScrollImageKeys.length).padStart(2, '0')}
-                  </span>
+        {/* Desktop: sticky horizontal scroll driven by vertical scroll */}
+        <div className="hidden md:block sticky-scroll-wrapper">
+          <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+            <motion.div
+              style={{ x: hScrollX }}
+              className="flex gap-6 will-change-transform pl-6 sm:pl-10 lg:pl-16"
+            >
+              {horizontalScrollImageKeys.map((key, i) => (
+                <div
+                  key={key}
+                  className="group relative flex-shrink-0 w-[60vw] max-w-[800px] overflow-hidden border border-ink-200 cursor-pointer"
+                  onClick={() => openHorizontalImage(key, i)}
+                  data-cursor="view"
+                >
+                  <img
+                    src={images[key].src}
+                    alt={images[key].alt}
+                    loading="lazy"
+                    className="w-full aspect-[16/10] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-ink-950/50 to-transparent">
+                    <span className="font-sans text-micro uppercase tracking-ultra-wide text-ink-0/70">
+                      {String(i + 1).padStart(2, '0')} / {String(horizontalScrollImageKeys.length).padStart(2, '0')}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </motion.div>
+              ))}
+            </motion.div>
+          </div>
+          {/* Extra scroll distance for horizontal movement */}
+          <div className="h-[150vh]" />
         </div>
 
         {/* Mobile: simple horizontal overflow */}
-        <div className="md:hidden flex gap-4 overflow-x-auto px-6 pb-4 -mx-6 snap-x snap-mandatory">
+        <div className="md:hidden flex gap-4 overflow-x-auto px-6 pb-8 snap-x snap-mandatory">
           {horizontalScrollImageKeys.map((key, i) => (
             <div
               key={key}
